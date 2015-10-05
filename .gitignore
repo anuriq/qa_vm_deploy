@@ -1,7 +1,17 @@
 iso
-output-virtualbox-iso
 *.iso
-
+*.box
+*.vmdk
+*.ovf
+*.vdi
+*.vhd
+*.vhdx
+output-virtualbox-iso/
 packer_cache/
+
+
+# Excluding binaries. User should get them himself and put in bin. Full path goes here.
+
+# This is SDelete by Sysinternals (https://technet.microsoft.com/en-us/sysinternals/bb897443.aspx)
 bin/sdelete.exe
 bin/Eula.txt
