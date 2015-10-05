@@ -1,0 +1,50 @@
+{
+  "builders": [
+    {
+      "type": "virtualbox-iso",
+      "vboxmanage": [
+        [ "modifyvm", "{{.Name}}", "--natpf1", "guest_winrm,tcp,,55985,,5985" ],
+        [ "modifyvm", "{{.Name}}", "--memory", "2048" ],
+        [ "modifyvm", "{{.Name}}", "--vram", "36" ],
+        [ "modifyvm", "{{.Name}}", "--cpus", "2" ]
+      ],
+      "guest_os_type": "Windows2012_64",
+      "headless": "{{ user `headless` }}",
+      "iso_url": "{{ user `iso_url` }}",
+      "iso_checksum": "{{ user `iso_checksum` }}",
+      "iso_checksum_type": "sha1",
+      "communicator": "winrm",
+      "winrm_username": "packer",
+      "winrm_password": "P@ssw0rd",
+      "winrm_timeout": "5h",
+      "guest_additions_mode": "disable",
+      "shutdown_command": "C:/windows/system32/sysprep/sysprep.exe /generalize /oobe /unattend:C:/Windows/Panther/Unattend/unattend.xml /quiet /shutdown",
+      "shutdown_timeout": "15m",
+      "floppy_files": [
+        "config/{{user `winversion`}}/autounattend.xml",
+		"config/{{user `winversion`}}/WindowsFeatures.xml",
+        "config/{{user `winversion`}}/postunattend.xml",
+        "scripts/boxstarter.ps1",
+        "scripts/package.ps1",
+		"scripts/functions.psm1",
+		"bin/sdelete.exe",
+		"bin/Eula.txt"
+      ]
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "keep_input_artifact": true,
+      "output": "windows2012r2min-{{.Provider}}.box",
+      "vagrantfile_template": "vagrantfile-windows.template"
+    }
+  ],
+  "variables": {
+    "core": "",
+    "winversion": "2012_r2",
+    "headless": "false",
+    "iso_checksum": "849734f37346385dac2c101e4aacba4626bb141c",
+    "iso_url": "c:\\usr\\git\\packer-templates\\win2012r2_x64_eval.iso"
+  }
+}

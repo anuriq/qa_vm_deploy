@@ -1,0 +1,7 @@
+iso
+output-virtualbox-iso
+*.iso
+
+packer_cache/
+bin/sdelete.exe
+bin/Eula.txt
